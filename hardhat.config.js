@@ -14,39 +14,40 @@ const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY
 const COINMARKETCAP_API_KEY = process.env.COINMARKETCAP_API_KEY
 
 module.exports = {
-  defaultNetwork: "hardhat",
-  networks: {
-    hardhat: {
-      chainId: 31337,
-      blockConfirmations: 5,
-    },
-    goerli: {
-      chainId: 5,
-      blockConfirmations: 5,
-      url: GOERLI_RPC_URL,
-      saveDeployments: true,
-      accounts: [PRIVATE_KEY],
-    },
-  },
-  solidity: "0.8.7",
-  namedAccounts: {
-    deployer: {
-      default: 0,
-    },
-    player: {
-      default: 1,
-    },
-  },
-  etherscan: { apiKey: ETHERSCAN_API_KEY },
-  gasReporter: {
-    enabled: false,
-    outputFile: "gas-report.txt",
-    noColors: true,
-    currency: "USD",
-    // token: "Matic",
-    // coinmarketcap: COINMARKETCAP_API_KEY,
-  },
-  mocha: {
-    timeout: 500000, // 500 seconds max for running tests
-  },
+	defaultNetwork: "hardhat",
+	networks: {
+		hardhat: {
+			chainId: 31337,
+			// blockConfirmations: 5,
+		},
+		goerli: {
+			chainId: 5,
+			blockConfirmations: 5,
+			url: GOERLI_RPC_URL,
+			saveDeployments: true,
+			accounts: [PRIVATE_KEY],
+		},
+	},
+	solidity: "0.8.7",
+	namedAccounts: {
+		deployer: {
+			default: 0, // by default will take first account as deployer
+			1: 0, // on mainnet will take first account as deployer
+		},
+		user1: {
+			default: 1,
+		},
+	},
+	etherscan: { apiKey: ETHERSCAN_API_KEY },
+	gasReporter: {
+		enabled: false,
+		outputFile: "gas-report.txt",
+		noColors: true,
+		currency: "USD",
+		// token: "Matic",
+		// coinmarketcap: COINMARKETCAP_API_KEY,
+	},
+	mocha: {
+		timeout: 500000, // 500 seconds max for running tests
+	},
 }

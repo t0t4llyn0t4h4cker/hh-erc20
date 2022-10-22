@@ -20,9 +20,15 @@ const networkConfig = {
 	},
 }
 
+const INITIAL_SUPPLY = "1000000000000000000000000"
+const TOKEN_NAME = "NEWNEW"
+const TOKEN_SYMBOL = "NEW"
 const developmentChains = ["hardhat", "localhost"]
 
 module.exports = {
 	networkConfig,
 	developmentChains,
+	INITIAL_SUPPLY,
+	TOKEN_NAME,
+	TOKEN_SYMBOL,
 }
