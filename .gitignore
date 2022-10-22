@@ -12,6 +12,8 @@ typechain-types
 deployments
 gas-report.txt
 
+.encryptedKey.json
+
 #Hardhat files
 cache
 artifacts
