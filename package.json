@@ -1,0 +1,7 @@
+{
+  "devDependencies": {
+    "@openzeppelin/contracts": "^4.7.3",
+    "fs-extra": "^10.1.0",
+    "hardhat": "^2.12.0"
+  }
+}
