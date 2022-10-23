@@ -16,8 +16,8 @@ const {
 
 			beforeEach(async () => {
 				const accounts = await getNamedAccounts()
-				deployer = accounts[0]
-				user1 = accounts[1]
+				deployer = accounts.deployer
+				user1 = accounts.user1
 				await deployments.fixture(["all"]) // deploys everything in deploy with tag all
 				token = await ethers.getContract("OurToken", deployer)
 			})
@@ -35,6 +35,57 @@ const {
 					assert.equal(symbolResult, TOKEN_SYMBOL)
 				})
 			})
-			// describe("transfers", async () => {})
-			// describe("allowance", async () => {})
+			describe("transfers", async () => {
+				it("transfers the tokens", async () => {
+					const transferAmount = ethers.utils.parseEther("10")
+					await token.transfer(user1, transferAmount)
+					const user1Balance = await token.balanceOf(user1)
+					assert.equal(transferAmount, user1Balance.toString())
+				})
+				it("emits transfer event when transfer occurs", async () => {
+					const transferAmount = ethers.utils.parseEther("10")
+					await expect(token.transfer(user1, transferAmount))
+						.to.emit(token, "Transfer")
+						.withArgs(deployer, user1, transferAmount)
+				})
+			})
+			describe("allowance", async () => {
+				beforeEach(async () => {
+					playerToken = await ethers.getContract("OurToken", user1)
+				})
+				it("should approve other address to spend tokens", async () => {
+					const transferAmount = ethers.utils.parseEther("10")
+					await token.approve(user1, transferAmount)
+					await playerToken.transferFrom(deployer, user1, transferAmount)
+					const user1Balance = await token.balanceOf(user1)
+					assert.equal(transferAmount, user1Balance.toString())
+				})
+				it("doesnt allow unapproved members to do transfers", async () => {
+					const transferAmount = ethers.utils.parseEther("10")
+					await expect(
+						playerToken.transferFrom(deployer, user1, transferAmount)
+					).to.be.revertedWith("ERC20: insufficient allowance")
+				})
+				it("emits an approval event when approval occurs", async () => {
+					const transferAmount = ethers.utils.parseEther("10")
+					await expect(token.approve(user1, transferAmount))
+						.to.emit(token, "Approval")
+						.withArgs(deployer, user1, transferAmount)
+				})
+				it("shows allowance being set correctly", async () => {
+					//
+					const transferAmount = ethers.utils.parseEther("10")
+					await token.approve(user1, transferAmount)
+					const user1Allowance = await playerToken.allowance(deployer, user1)
+					assert.equal(transferAmount, user1Allowance.toString())
+				})
+				it("wont allow us to go over the allowance", async () => {
+					const transferAmountApproval = ethers.utils.parseEther("9")
+					const transferAmount = ethers.utils.parseEther("10")
+					await token.approve(user1, transferAmountApproval)
+					await expect(
+						playerToken.transferFrom(deployer, user1, transferAmount)
+					).to.be.revertedWith("ERC20: insufficient allowance")
+				})
+			})
 	  })
