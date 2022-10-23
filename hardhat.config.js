@@ -10,6 +10,7 @@ require("dotenv").config()
 
 const GOERLI_RPC_URL = process.env.GOERLI_RPC_URL
 const PRIVATE_KEY = process.env.PRIVATE_KEY
+const PRIVATE_KEY2 = process.env.PRIVATE_KEY2
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY
 const COINMARKETCAP_API_KEY = process.env.COINMARKETCAP_API_KEY
 
@@ -18,6 +19,7 @@ module.exports = {
 	networks: {
 		hardhat: {
 			chainId: 31337,
+			saveDeployments: true,
 			// blockConfirmations: 5,
 		},
 		goerli: {
@@ -25,7 +27,7 @@ module.exports = {
 			blockConfirmations: 5,
 			url: GOERLI_RPC_URL,
 			saveDeployments: true,
-			accounts: [PRIVATE_KEY],
+			accounts: [PRIVATE_KEY, PRIVATE_KEY2],
 		},
 	},
 	solidity: "0.8.7",
@@ -33,9 +35,11 @@ module.exports = {
 		deployer: {
 			default: 0, // by default will take first account as deployer
 			1: 0, // on mainnet will take first account as deployer
+			5: 0,
 		},
 		user1: {
 			default: 1,
+			5: 1,
 		},
 	},
 	etherscan: { apiKey: ETHERSCAN_API_KEY },

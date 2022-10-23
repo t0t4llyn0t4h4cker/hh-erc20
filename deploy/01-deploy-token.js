@@ -29,7 +29,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
 	log(`NEWNEW Token deployed at ${ourToken.address}`)
 
 	if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
-		await verify(lottery.address, args)
+		await verify(ourToken.address, args)
 	}
 
 	log("---------------------------------------------------------------------")

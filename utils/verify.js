@@ -7,6 +7,7 @@ async function verify(contractAddress, args) {
 			//run is for hardhat tasks
 			address: contractAddress,
 			constructorArguments: args,
+			contract: "contracts/OurToken.sol:OurToken",
 		})
 	} catch (e) {
 		if (e.message.toLowerCase().includes("already verified")) {
